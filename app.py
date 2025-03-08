@@ -25,16 +25,20 @@ def chatbot():
         company = st.text_input("Công ty đang công tác:")
         experience = st.selectbox("Số năm kinh nghiệm:", ["< 3 năm", "3 - 5 năm", "5 - 10 năm", "> 10 năm"])
         
-        if st.button("Tiếp tục") and name:
-            st.session_state.responses.update({
-                "Tên": name, "Chức vụ": position, "Công ty": company, "Kinh nghiệm": experience,
-                "Thời gian khảo sát": datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-            })
-            st.session_state.step = 2
-            st.rerun()
+        if st.button("Tiếp tục"):
+            if not name or not company:
+                st.warning("Vui lòng nhập đầy đủ Họ và Tên, Công ty trước khi tiếp tục! 🚀")
+            else:
+                st.session_state.responses.update({
+                    "Tên": name, "Chức vụ": position, "Công ty": company, "Kinh nghiệm": experience,
+                    "Thời gian khảo sát": datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+                })
+                st.session_state.step = 2
+                st.rerun()
     
     elif st.session_state.step == 2:
-        st.subheader(f"Cảm ơn bạn, {st.session_state.responses['Tên']}! Hãy đánh giá mức độ am hiểu của bạn.")
+        name = st.session_state.responses["Tên"]
+        st.subheader(f"Cảm ơn bạn, {name}! Hãy đánh giá mức độ am hiểu của bạn.")
         topics = [
             "Chiến lược và quản trị doanh nghiệp", "Quản lý tài chính và dòng tiền",
             "Quản lý nhân sự và phát triển đội ngũ", "Ứng dụng công nghệ và đổi mới sáng tạo",
@@ -51,7 +55,8 @@ def chatbot():
             st.rerun()
     
     elif st.session_state.step == 3:
-        st.subheader(f"{st.session_state.responses['Tên']}, bạn mong muốn đào tạo về lĩnh vực nào?")
+        name = st.session_state.responses["Tên"]
+        st.subheader(f"{name}, bạn mong muốn đào tạo về lĩnh vực nào?")
         training_needs = st.multiselect(
             "Chọn tối đa 3 lĩnh vực:", 
             ["Chiến lược và quản trị doanh nghiệp", "Quản lý tài chính và dòng tiền", "Quản lý nhân sự", 
@@ -67,7 +72,8 @@ def chatbot():
             st.rerun()
     
     elif st.session_state.step == 4:
-        st.subheader(f"{st.session_state.responses['Tên']}, bạn gặp khó khăn gì trong việc tham gia đào tạo?")
+        name = st.session_state.responses["Tên"]
+        st.subheader(f"{name}, bạn gặp khó khăn gì trong việc tham gia đào tạo?")
         difficulties = st.multiselect(
             "Chọn tất cả những yếu tố phù hợp:", 
             ["Công việc bận rộn", "Địa điểm đào tạo xa", "Chương trình không phù hợp", "Không có thời gian học trực tuyến", "Khác"]
@@ -82,7 +88,8 @@ def chatbot():
             st.rerun()
     
     elif st.session_state.step == 5:
-        st.success(f"Cảm ơn bạn, {st.session_state.responses['Tên']}! Khảo sát đã hoàn thành. 🚀")
+        name = st.session_state.responses["Tên"]
+        st.success(f"Cảm ơn bạn, {name}! Khảo sát đã hoàn thành. 🚀")
         st.write("Dữ liệu của bạn đã được ghi nhận thành công.")
         st.button("Khảo sát lại", on_click=lambda: st.session_state.update(step=1, responses={}))
 
