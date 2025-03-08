@@ -31,7 +31,7 @@ def chatbot():
                 "Thời gian khảo sát": datetime.now().strftime("%Y-%m-%d %H:%M:%S")
             })
             st.session_state.step = 2
-            st.experimental_rerun()
+            st.rerun()
     
     elif st.session_state.step == 2:
         st.subheader(f"Cảm ơn bạn, {st.session_state.responses['Tên']}! Hãy đánh giá mức độ am hiểu của bạn.")
@@ -48,7 +48,7 @@ def chatbot():
         if st.button("Tiếp tục"):
             st.session_state.responses.update(ratings)
             st.session_state.step = 3
-            st.experimental_rerun()
+            st.rerun()
     
     elif st.session_state.step == 3:
         st.subheader(f"{st.session_state.responses['Tên']}, bạn mong muốn đào tạo về lĩnh vực nào?")
@@ -64,7 +64,7 @@ def chatbot():
         if st.button("Tiếp tục"):
             st.session_state.responses.update({"Nhu cầu đào tạo": training_needs, "Nội dung khác": custom_training, "Hình thức đào tạo": format_preference})
             st.session_state.step = 4
-            st.experimental_rerun()
+            st.rerun()
     
     elif st.session_state.step == 4:
         st.subheader(f"{st.session_state.responses['Tên']}, bạn gặp khó khăn gì trong việc tham gia đào tạo?")
@@ -79,7 +79,7 @@ def chatbot():
             st.session_state.responses.update({"Khó khăn": difficulties, "Lý do khác": difficulty_details, "Đóng góp": feedback})
             save_response(st.session_state.responses)
             st.session_state.step = 5
-            st.experimental_rerun()
+            st.rerun()
     
     elif st.session_state.step == 5:
         st.success(f"Cảm ơn bạn, {st.session_state.responses['Tên']}! Khảo sát đã hoàn thành. 🚀")
