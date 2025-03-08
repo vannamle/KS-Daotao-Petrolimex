@@ -47,10 +47,19 @@ def chatbot():
         ]
         ratings = {}
         for topic in topics:
-            ratings[topic] = st.slider(topic, 1, 5, 3)
+            rating = st.slider(topic, 1, 5, 3)
+            ratings[topic] = rating
         
         if st.button("Tiếp tục"):
             st.session_state.responses.update(ratings)
+            
+            if all(value <= 2 for value in ratings.values()):
+                st.session_state.responses["Chatbot phản hồi"] = "Đừng lo, {name}! Chương trình đào tạo sẽ giúp bạn nâng cao năng lực! 💪"
+            elif all(value >= 4 for value in ratings.values()):
+                st.session_state.responses["Chatbot phản hồi"] = "Bạn có nền tảng rất tốt, {name}! Chương trình sẽ giúp bạn hoàn thiện kỹ năng hơn nữa! 🚀"
+            else:
+                st.session_state.responses["Chatbot phản hồi"] = "Bạn có kiến thức tốt ở một số lĩnh vực! Chúng tôi sẽ giúp bạn phát triển thêm những kỹ năng cần thiết! 🎯"
+            
             st.session_state.step = 3
             st.rerun()
     
@@ -78,11 +87,12 @@ def chatbot():
             "Chọn tất cả những yếu tố phù hợp:", 
             ["Công việc bận rộn", "Địa điểm đào tạo xa", "Chương trình không phù hợp", "Không có thời gian học trực tuyến", "Khác"]
         )
-        difficulty_details = st.text_input("Nếu có lý do khác, vui lòng nhập vào đây:")
-        feedback = st.text_area("Bạn có ý kiến đóng góp gì để chương trình hiệu quả hơn?")
+        
+        if "Công việc bận rộn" in difficulties:
+            st.write("Chúng tôi sẽ cố gắng thiết kế chương trình linh hoạt nhất có thể để hỗ trợ bạn! 🎯")
         
         if st.button("Hoàn thành khảo sát"):
-            st.session_state.responses.update({"Khó khăn": difficulties, "Lý do khác": difficulty_details, "Đóng góp": feedback})
+            st.session_state.responses.update({"Khó khăn": difficulties})
             save_response(st.session_state.responses)
             st.session_state.step = 5
             st.rerun()
